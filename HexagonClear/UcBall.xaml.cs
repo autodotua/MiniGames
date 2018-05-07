@@ -73,25 +73,6 @@ namespace HexagonClear
                     case BallStatus.Empty:
                         if (status == BallStatus.Occupied)
                         {
-                            //ThicknessAnimation aniToSmall = new ThicknessAnimation(new Thickness(R), AnimationDuration);
-                            //ThicknessAnimation aniToBig = new ThicknessAnimation(new Thickness(), AnimationDuration);
-
-                            //Storyboard.SetTarget(aniToSmall, ball);
-                            //Storyboard.SetTarget(aniToBig, ball);
-                            //Storyboard.SetTargetProperty(aniToSmall, new PropertyPath(MarginProperty));
-                            //Storyboard.SetTargetProperty(aniToBig, new PropertyPath(MarginProperty));
-                            //Storyboard storyToSmall = new Storyboard();
-                            //Storyboard storyToBig = new Storyboard();
-                            //storyToSmall.Children.Add(aniToSmall);
-                            //storyToBig.Children.Add(aniToBig);
-                            //storyToSmall.Completed += (p1, p2) =>
-                            //{
-                            //    BallColor = new SolidColorBrush(Color.FromRgb(0xDD, 0xDD, 0xDD));
-
-                            //    storyToBig.Begin();
-                            //};
-                            //storyToSmall.Begin();
-                            // (ball.RenderTransform as ScaleTransform).ScaleX = 0.1;
                             TimeSpan aniTimeSpan = TimeSpan.FromMilliseconds(AnimationDuration.TotalMilliseconds / 2);
                             DoubleAnimation aniXToSmall = new DoubleAnimation(0, aniTimeSpan);
                             Storyboard.SetTarget(aniXToSmall, circle);
@@ -126,33 +107,32 @@ namespace HexagonClear
                         BallColor = new SolidColorBrush(Color.FromRgb(0xFF, 0xAA, 0xAA));
                         break;
                     case BallStatus.Occupied:
-                        if (status == BallStatus.Standby)
-                        {
-                            ColorAnimation aniStandby = new ColorAnimation(Color.FromRgb(0xFF, 0x55, 0x55), AnimationDuration);
-                            Storyboard.SetTarget(aniStandby, this);
-                            Storyboard.SetTargetProperty(aniStandby, new PropertyPath("BallColor.(SolidColorBrush.Color)"));
-                            Storyboard storyStandby = new Storyboard();
-                            storyStandby.Children.Add(aniStandby);
-                            storyStandby.Begin();
-                        }
-                        else
-                        {
-                            BallColor = new SolidColorBrush(Color.FromRgb(0xFF, 0x55, 0x55));
-                        }
+                        //if (status == BallStatus.Standby)
+                        //{
+                            BeginColorAnimation(Color.FromRgb(0xFF, 0x55, 0x55), this, new PropertyPath("BallColor.(SolidColorBrush.Color)"));
+                        //}
+                        //else
+                        //{
+                        //    BallColor = new SolidColorBrush(Color.FromRgb(0xFF, 0x55, 0x55));
+                        //}
                         break;
                     case BallStatus.Occupable:
-                        ColorAnimation aniOccupable = new ColorAnimation(Color.FromRgb(0xAA, 0xFF, 0xAA), AnimationDuration);
-                        Storyboard.SetTarget(aniOccupable, this);
-                        Storyboard.SetTargetProperty(aniOccupable, new PropertyPath("BallColor.(SolidColorBrush.Color)"));
-                        Storyboard storyOccupable = new Storyboard();
-                        storyOccupable.Children.Add(aniOccupable);
-                        storyOccupable.Begin();
+                        BeginColorAnimation(Color.FromRgb(0xAA, 0xFF, 0xAA), this, new PropertyPath("BallColor.(SolidColorBrush.Color)"));
                         break;
                 }
                 status = value;
-
-
+                
             }
+        }
+
+        private void BeginColorAnimation(Color To,FrameworkElement target,PropertyPath property)
+        {
+            ColorAnimation aniOccupable = new ColorAnimation(To, AnimationDuration);
+            Storyboard.SetTarget(aniOccupable, this);
+            Storyboard.SetTargetProperty(aniOccupable,property);
+            Storyboard storyOccupable = new Storyboard();
+            storyOccupable.Children.Add(aniOccupable);
+            storyOccupable.Begin();
         }
 
         public bool Occupable { get => occupable; set => occupable = value; }

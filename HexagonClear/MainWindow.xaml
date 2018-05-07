@@ -8,34 +8,17 @@
         xmlns:flat="clr-namespace:WpfControls.FlatStyle;assembly=WpfControls"
         mc:Ignorable="d"
         x:Name="mainHexagonClear"
-        Loaded="WindowLoadedEventHandler"
         Title="MainWindow" Height="600" Width="800">
+
     <Grid x:Name="grdMain">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="4*"/> 
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Canvas x:Name="cvs"/>
-        <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-            <TextBlock Text="得分：" FontSize="30"/>
-            <text:GradualChangedNumberBlock ClipToBounds="True" x:Name="tbk"  Number="0" FontSize="30"  AnimationDirection="SmallToBig"/>
 
-        </StackPanel>
-        <Grid Grid.Row="2" x:Name="grdGroup">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-        </Grid>
-
-        <Grid x:Name="grdControl" Grid.RowSpan="3"  Background="{Binding Background, ElementName=mainHexagonClear}">
+        <Grid x:Name="grdControl"   Background="{Binding Background, ElementName=mainHexagonClear}">
             <StackPanel VerticalAlignment="Center">
                 <flat:Button x:Name="btnStart" Content="开始" FontSize="30" Margin="16" Padding="32,4" VerticalAlignment="Center" HorizontalAlignment="Center" Click="ButtonClickEventHandler"/>
                 <flat:Button x:Name="btnSettings" Content="设置" FontSize="30" Margin="16" Padding="32,4" VerticalAlignment="Center" HorizontalAlignment="Center" Click="ButtonClickEventHandler"/>
 
             </StackPanel>
         </Grid>
+        <Frame x:Name="frm" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

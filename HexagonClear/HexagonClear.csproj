@@ -58,6 +58,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Datas.cs" />
+    <Compile Include="PgGame.xaml.cs">
+      <DependentUpon>PgGame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PgSettings.xaml.cs">
+      <DependentUpon>PgSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UcBall.xaml.cs">
       <DependentUpon>UcBall.xaml</DependentUpon>
     </Compile>
@@ -73,6 +79,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PgGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PgSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UcBall.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

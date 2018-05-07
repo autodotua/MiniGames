@@ -18,5 +18,7 @@ namespace HexagonClear
         public static double D => 2 * R;
         public static TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(200);
 
+        public static MainWindow main;
+
     }
 }

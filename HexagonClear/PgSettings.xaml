@@ -1,0 +1,16 @@
+﻿<Page x:Class="HexagonClear.PgSettings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:text="clr-namespace:WpfControls.Text;assembly=WpfControls"
+      xmlns:flat="clr-namespace:WpfControls.FlatStyle;assembly=WpfControls"
+
+      xmlns:local="clr-namespace:HexagonClear"
+      mc:Ignorable="d" 
+      Title="PgSettings">
+
+    <Grid>
+        <flat:Button Click="Button_Click">确定</flat:Button>
+    </Grid>
+</Page>
