@@ -10,6 +10,9 @@ using static HexagonClear.UcBall;
 using static HexagonClear.Datas;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
+using System.IO;
+using System.Configuration;
+using static WPfCodes.Program.Config;
 
 namespace HexagonClear
 {
@@ -28,12 +31,16 @@ namespace HexagonClear
         {
             InitializeComponent();
             main = this;
+            WpfControls.Dialog.DialogHelper.DefautDialogOwner = this;
+            btnContinue.IsEnabled = File.Exists("HexagonClearSave.ini");
+            InitializeConfigs();
         }
 
         public void ReturnToStart()
         {
             frm.Content = null;
-            grdControl.Visibility = Visibility.Visible;
+            stkControl.Visibility = Visibility.Visible;
+            btnContinue.IsEnabled = File.Exists("HexagonClearSave.ini");
         }
 
         /// <summary>
@@ -47,9 +54,14 @@ namespace HexagonClear
             {
                 case "btnStart":
 
-                    gamePage = new PgGame();
+                    gamePage = new PgGame(false);
 
                     //  frm.Navigate(new Uri("PgGame.xaml", UriKind.Relative));
+                    frm.Content = gamePage;
+                    break;
+
+                case "btnContinue":
+                    gamePage = new PgGame(true);
                     frm.Content = gamePage;
                     break;
 
@@ -61,7 +73,7 @@ namespace HexagonClear
                     frm.Content = settingPage;
                     break;
             }
-            grdControl.Visibility = Visibility.Collapsed;
+            stkControl.Visibility = Visibility.Collapsed;
         }
 
     }

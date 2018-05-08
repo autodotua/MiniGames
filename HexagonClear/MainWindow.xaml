@@ -8,17 +8,18 @@
         xmlns:flat="clr-namespace:WpfControls.FlatStyle;assembly=WpfControls"
         mc:Ignorable="d"
         x:Name="mainHexagonClear"
-        Title="MainWindow" Height="600" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow"
+        Height="600" Width="600"
+        MinHeight="600" MinWidth="600">
 
     <Grid x:Name="grdMain">
 
-        <Grid x:Name="grdControl"   Background="{Binding Background, ElementName=mainHexagonClear}">
-            <StackPanel VerticalAlignment="Center">
-                <flat:Button x:Name="btnStart" Content="开始" FontSize="30" Margin="16" Padding="32,4" VerticalAlignment="Center" HorizontalAlignment="Center" Click="ButtonClickEventHandler"/>
-                <flat:Button x:Name="btnSettings" Content="设置" FontSize="30" Margin="16" Padding="32,4" VerticalAlignment="Center" HorizontalAlignment="Center" Click="ButtonClickEventHandler"/>
-
-            </StackPanel>
-        </Grid>
-        <Frame x:Name="frm" NavigationUIVisibility="Hidden"/>
+        <StackPanel x:Name="stkControl" VerticalAlignment="Center">
+            <flat:Button x:Name="btnStart" Content="开始" FontSize="30" Margin="16" Padding="32,4" VerticalAlignment="Center" HorizontalAlignment="Center" Click="ButtonClickEventHandler"/>
+            <flat:Button x:Name="btnContinue" Content="继续" FontSize="30" Margin="16" Padding="32,4" VerticalAlignment="Center" HorizontalAlignment="Center" Click="ButtonClickEventHandler"/>
+            <flat:Button x:Name="btnSettings" Content="设置" FontSize="30" Margin="16" Padding="32,4" VerticalAlignment="Center" HorizontalAlignment="Center" Click="ButtonClickEventHandler"/>
+        </StackPanel>
+        <Frame x:Name="frm" Margin="4" NavigationUIVisibility="Hidden" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
     </Grid>
 </Window>

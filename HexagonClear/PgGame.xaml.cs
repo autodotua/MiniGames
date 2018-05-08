@@ -10,7 +10,9 @@ using static HexagonClear.UcBall;
 using static HexagonClear.Datas;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
-
+using System.Text;
+using System.IO;
+using static WpfControls.Dialog.DialogHelper;
 
 namespace HexagonClear
 {
@@ -19,22 +21,13 @@ namespace HexagonClear
     /// </summary>
     public partial class PgGame : Page
     {
-        public PgGame()
+        public PgGame(bool save)
         {
             InitializeComponent();
-
-
+            this.save = save;
         }
 
-
-        /// <summary>
-        /// 是否点击以后保持对组合的控制
-        /// </summary>
-        private bool clickToHold = true;
-        /// <summary>
-        /// 是否点击以后保持对组合的控制
-        /// </summary>
-        public bool ClickToHold { get => clickToHold; set => clickToHold = value; }
+        private bool save;
         /// <summary>
         /// 重心横坐标
         /// </summary>
@@ -43,10 +36,6 @@ namespace HexagonClear
         /// 中心纵坐标
         /// </summary>
         double CenterY => cvs.ActualHeight / 2;
-        /// <summary>
-        /// 边长
-        /// </summary>
-        int length = 5;
         /// <summary>
         /// 根号三的一半的值
         /// </summary>
@@ -268,32 +257,61 @@ namespace HexagonClear
         /// <param name="e"></param>
         private void WindowLoadedEventHandler(object sender, RoutedEventArgs e)
         {
-            grdMain.Width = (2 * length - 1 + 4) * D;
-            grdMain.RowDefinitions[0].Height = new GridLength((2 * length - 1 + 2) * D);
+            grdMain.Width = (2 * Length - 1 + 4) * D;
+            grdMain.RowDefinitions[0].Height = new GridLength((2 * Length - 1 + 2) * D);
             grdMain.RowDefinitions[2].Height = new GridLength(3 * D);
-            grdMain.Arrange(new Rect(new Size(grdMain.Width, grdMain.Height=grdMain.RowDefinitions.Sum(p => p.Height.Value))));
+            grdMain.Arrange(new Rect(new Size(grdMain.Width, grdMain.Height = grdMain.RowDefinitions.Sum(p => p.Height.Value))));
             PageSizeChangedEventHandler(null, null);
 
             InitializeBoard();
             PutNewGroup(GetRandomBallsGroup(), 0);
             PutNewGroup(GetRandomBallsGroup(), 1);
             PutNewGroup(GetRandomBallsGroup(), 2);
-            foreach (var ball in ballsBoard)
+            if (save)
             {
-                ball.Status = BallStatus.Empty;
+                try
+                {
+                    List<Point> points = new List<Point>();
+                    string[] datas = File.ReadAllLines("HexagonClearSave.ini");//.Select(p=>p.Replace("\n","").Replace("\r","")).ToArray();
+                    Score = int.Parse(datas[0]);
+                    for (int i = 1; i < datas.Length; i++)
+                    {
+                        string[] point = datas[i].Split(',');
+                        if (point.Length != 2)
+                        {
+                            ShowError("保存的进度读取失败！");
+                            Judge();
+                            return;
+                        }
+                        points.Add(new Point(int.Parse(point[0]), int.Parse(point[1])));
+                    }
+
+                    foreach (var ball in ballsBoard)
+                    {
+                        if (points.Any(p => p.X == ball.X && p.Y == ball.Y))
+                        {
+                            ball.Status = BallStatus.Occupied;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowException("读取保存的进度失败！", ex);
+                }
             }
             Judge();
+
         }
         /// <summary>
         /// 初始化“棋盘”
         /// </summary>
         private void InitializeBoard()
         {
-            for (int x = -2 * length; x <= 2 * length; x++)
+            for (int x = -2 * Length; x <= 2 * Length; x++)
             {
-                for (int y = -length; y <= length; y++)
+                for (int y = -Length; y <= Length; y++)
                 {
-                    if ((x + y) % 2 == 0 && Math.Abs(x) + Math.Abs(y) <= length * 2 - 2 && Math.Abs(y) < length)
+                    if ((x + y) % 2 == 0 && Math.Abs(x) + Math.Abs(y) <= Length * 2 - 2 && Math.Abs(y) < Length)
                     {
                         Draw(x, y);
                     }
@@ -478,8 +496,8 @@ namespace HexagonClear
             // double dy = currentPosition.Y - lastPosition.Y + tmp.Margin.Top;
             // tmp.Margin = new Thickness(dx, dy, 0, 0);
             TranslateTransform translate = currentCanvas.RenderTransform as TranslateTransform;
-            translate.X += currentPosition.X - lastPosition.X;
-            translate.Y += currentPosition.Y - lastPosition.Y;
+            translate.X += (currentPosition.X - lastPosition.X) / multiple;
+            translate.Y += (currentPosition.Y - lastPosition.Y) / multiple;
             lastPosition = currentPosition;
 
             Point point = GetHexagonBasedPosition(currentCanvas);
@@ -520,7 +538,7 @@ namespace HexagonClear
         /// <param name="e"></param>
         private void CanvasMouseMoveEventHandler(object sender, MouseEventArgs e)
         {
-            if (!clickToHold && e.LeftButton != MouseButtonState.Pressed)
+            if (!ClickToHold && e.LeftButton != MouseButtonState.Pressed)
             {
                 return;
             }
@@ -618,7 +636,7 @@ namespace HexagonClear
         /// <param name="e"></param>
         private void CanvasMouseLeftButtonUpEventHandler(object sender, MouseButtonEventArgs e)
         {
-            if (!clickToHold)
+            if (!ClickToHold)
             {
                 ReleaseGroup(sender as Canvas);
             }
@@ -662,7 +680,7 @@ namespace HexagonClear
 
                 if (!Judge(currentCanvas))
                 {
-                    WpfControls.Dialog.DialogHelper.ShowPrompt("您已没有可以放置组合的空间了。" + Environment.NewLine + "本局得分：" + Score + "分",main);
+                    WpfControls.Dialog.DialogHelper.ShowPrompt("您已没有可以放置组合的空间了。" + Environment.NewLine + "本局得分：" + Score + "分");
                     main.ReturnToStart();
                     //grdControl.Visibility = Visibility.Visible;
                 }
@@ -746,7 +764,7 @@ namespace HexagonClear
             HashSet<UcBall> avaliable;
             foreach (Canvas canvas in grdGroup.Children.Cast<Canvas>())
             {
-                if(currentCanvas==canvas)
+                if (currentCanvas == canvas)
                 {
                     continue;
                 }
@@ -760,7 +778,7 @@ namespace HexagonClear
                 }
                 availablePosition.Add(canvas, avaliable);
             }
-        //    Debug.WriteLine(availablePosition.Sum(p => p.Value.Count));
+            //    Debug.WriteLine(availablePosition.Sum(p => p.Value.Count));
             if (availablePosition.Any(p => p.Value.Count > 0))
             {
                 return true;
@@ -786,17 +804,52 @@ namespace HexagonClear
             //    + canvasSize.Height / 2 - (canvas.Children[0] as UcBall).Y * D * sqrt32 - R;
             return new Point(x, y);
         }
-
+        double multiple = 1;
         private void PageSizeChangedEventHandler(object sender, SizeChangedEventArgs e)
         {
+
             if (double.IsNaN(grdMain.Height))
             {
                 return;
             }
             var scale = grdMain.RenderTransform as ScaleTransform;
-            double multiple = Math.Min(ActualHeight/grdMain.Height, ActualWidth / grdMain.Width);
+            multiple = Math.Min(ActualHeight / grdMain.Height, ActualWidth / grdMain.Width);
             scale.ScaleX = multiple;
             scale.ScaleY = multiple;
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            switch (ShowMessage("是否要关闭？" +
+                Environment.NewLine + "当前得分：" + Score,
+                WpfControls.Dialog.DialogType.Information,
+                new string[] { "关闭", "暂停", "取消" }))
+            {
+                case 0:
+                    Visibility = Visibility.Collapsed;
+                    main.ReturnToStart();
+                    break;
+                case 1:
+                    StringBuilder str = new StringBuilder();
+                    str.AppendLine(Score.ToString());
+                    foreach (var ball in ballsBoard.Where(p => p.Status == BallStatus.Occupied))
+                    {
+                        str.AppendLine(ball.X.ToString() + "," + ball.Y.ToString());
+                    }
+                    try
+                    {
+                        File.WriteAllText("HexagonClearSave.ini", str.ToString());
+                        main.ReturnToStart();
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowException("进度保存失败", ex);
+                    }
+                    break;
+                case 2:
+                    break;
+            }
         }
     }
 }
