@@ -462,7 +462,6 @@ namespace HexagonClear
             if (ClickToHold && isHold)
             {
                 ReleaseGroup(currentCanvas);
-                currentCanvas.Cursor = Cursors.Arrow;
                 isHold = false;
                 return;
             }
@@ -470,8 +469,8 @@ namespace HexagonClear
             if (ClickToHold)
             {
                 isHold = true;
-                currentCanvas.Cursor = Cursors.None;
             }
+            currentCanvas.Cursor = HoldCursor;
 
             foreach (var ball in availablePosition[currentCanvas].Intersect(ballsBoard))
             {
@@ -650,6 +649,7 @@ namespace HexagonClear
             clickedCanvas = null;
             currentCanvas.Opacity = 1;
             currentCanvas.ReleaseMouseCapture();
+            currentCanvas.Cursor = Cursors.Arrow;
 
             bool changed = false;
 
@@ -804,7 +804,15 @@ namespace HexagonClear
             //    + canvasSize.Height / 2 - (canvas.Children[0] as UcBall).Y * D * sqrt32 - R;
             return new Point(x, y);
         }
+        /// <summary>
+        /// 画板放大倍率
+        /// </summary>
         double multiple = 1;
+        /// <summary>
+        /// 页面尺寸改变事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PageSizeChangedEventHandler(object sender, SizeChangedEventArgs e)
         {
 
@@ -818,8 +826,12 @@ namespace HexagonClear
             scale.ScaleY = multiple;
 
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 单机返回按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonClickEventHandler(object sender, RoutedEventArgs e)
         {
             switch (ShowMessage("是否要关闭？" +
                 Environment.NewLine + "当前得分：" + Score,

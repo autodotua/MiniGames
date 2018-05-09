@@ -12,10 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static HexagonClear.Datas;
+using static Pinball.Datas;
 using static WPfCodes.Program.Config;
 
-namespace HexagonClear
+namespace Pinball
 {
     /// <summary>
     /// PgSettings.xaml 的交互逻辑
@@ -25,9 +25,7 @@ namespace HexagonClear
         public PgSettings()
         {
             InitializeComponent();
-            cbbLength.SelectedIndex = Length - 4;
-            cbbClickToHold.SelectedIndex = ClickToHold ? 1 : 0;
-            cbbHoldCursor.SelectedIndex = HoldCursor == Cursors.Arrow ? 0 : (HoldCursor == Cursors.Hand ? 1 : 2);
+         
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -35,10 +33,6 @@ namespace HexagonClear
 
             if ((sender as Button).Name == "btnOk")
             {
-                config.SetInt("Length",cbbLength.SelectedIndex + 4);
-                config.SetBool("ClickToHold", cbbClickToHold.SelectedIndex == 1);
-                config.SetInt("HoldCursor", cbbHoldCursor.SelectedIndex);
-                config.Save();
                 InitializeConfigs();
             }
 

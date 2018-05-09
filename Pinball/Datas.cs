@@ -4,10 +4,9 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using static WPfCodes.Program.Config;
 
-namespace HexagonClear
+namespace Pinball
 {
     public static class Datas
     {
@@ -32,30 +31,21 @@ namespace HexagonClear
         /// 边长
         /// </summary>
         private static int length = 5;
-        
+
         /// <summary>
         /// 是否点击以后保持对组合的控制
         /// </summary>
-        public static bool ClickToHold { get; set; }
-
-        public static Cursor HoldCursor { get; set; }
+        private static bool clickToHold = true;
+        /// <summary>
+        /// 是否点击以后保持对组合的控制
+        /// </summary>
+        public static bool ClickToHold { get => clickToHold; set => clickToHold = value; }
+        
 
         public static void InitializeConfigs()
         {
             Length = config.GetInt("Length", 5);
             ClickToHold = config.GetBool("ClickToHold",true);
-            switch( config.GetInt("HoldCursor", 2))
-            {
-                case 0:
-                    HoldCursor = Cursors.Arrow;
-                    break;
-                case 1:
-                    HoldCursor = Cursors.Hand;
-                    break;
-                case 2:
-                    HoldCursor = Cursors.None;
-                    break;
-            }
         }
     }
 }
