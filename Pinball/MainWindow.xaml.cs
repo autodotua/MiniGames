@@ -32,7 +32,7 @@ namespace Pinball
             InitializeComponent();
             main = this;
             WpfControls.Dialog.DialogHelper.DefautDialogOwner = this;
-            btnContinue.IsEnabled = File.Exists("HexagonClearSave.ini");
+            btnContinue.IsEnabled = File.Exists("PinballrSave.ini");
             InitializeConfigs();
         }
 
@@ -45,7 +45,7 @@ namespace Pinball
         {
             frm.Content = null;
             stkControl.Visibility = Visibility.Visible;
-            btnContinue.IsEnabled = File.Exists("HexagonClearSave.ini");
+            btnContinue.IsEnabled = File.Exists("PinballSave.ini");
         }
 
         /// <summary>

@@ -13,19 +13,23 @@
       
       Title="PgGame">
 
-    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Grid x:Name="grdMain" Background="Transparent" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid.RenderTransform>
-                <ScaleTransform/>
-            </Grid.RenderTransform>
+    <Grid  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid x:Name="grdMain"   RenderTransformOrigin="0.5,0.5" >
+            <Border x:Name="bd" BorderBrush="Black" BorderThickness="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border.RenderTransform>
+                    <ScaleTransform/>
+                </Border.RenderTransform>
+                <Canvas x:Name="cvs" Background="#FFEEEEEE" PreviewMouseMove="CanvasPreviewMouseMoveEventHandler" PreviewMouseDown="CanvasPreviewMouseDownEventHandler">
+                    <Line x:Name="line" Y1="10" Y2="10" Stroke="Black" StrokeThickness="3"/>
+                </Canvas>
 
-            <Canvas x:Name="cvs"/>
+            </Border>
 
         </Grid>
         <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-            <TextBlock Text="得分：" FontSize="30"/>
+            <TextBlock x:Name="tbkDebug" Text="得分：" FontSize="30"/>
             <text:GradualChangedNumberBlock ClipToBounds="True" x:Name="tbk"  Number="0" FontSize="30"  AnimationDirection="SmallToBig" AnimationDuration="0:0:0.5"/>
         </StackPanel>
-        <flat:Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="White" FontSize="24" FontFamily="simhei" FontWeight="Bold" Click="Button_Click" Padding="0" >←</flat:Button>
+        <flat:Button VerticalAlignment="Top" HorizontalAlignment="Right" Background="White" FontSize="24" FontFamily="simhei" FontWeight="Bold" Click="ButtonClickEventHandler" Padding="0" >←</flat:Button>
     </Grid>
 </Page>

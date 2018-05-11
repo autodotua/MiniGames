@@ -29,19 +29,6 @@
 
         </Grid.ColumnDefinitions>
         
-        <TextBlock>边长：</TextBlock>
-        <flat:UneditableComboBox x:Name="cbbLength" Grid.Column="2">
-            <ComboBoxItem>4</ComboBoxItem>
-            <ComboBoxItem>5</ComboBoxItem>
-            <ComboBoxItem>6</ComboBoxItem>
-            <ComboBoxItem>7</ComboBoxItem>
-        </flat:UneditableComboBox>
-        <TextBlock Grid.Row="2">组合选取方式：</TextBlock>
-        <flat:UneditableComboBox x:Name="cbbClickToHold" Grid.Row="2" Grid.Column="2">
-            <ComboBoxItem>点击并保持按下时捕捉，松开时释放</ComboBoxItem>
-            <ComboBoxItem>点击捕捉，再次点击释放</ComboBoxItem>
-
-        </flat:UneditableComboBox>
         <StackPanel Orientation="Horizontal" Grid.Row="100" Grid.ColumnSpan="4" HorizontalAlignment="Right">
             <flat:Button x:Name="btnCancel" Click="Button_Click"  FontSize="18" Padding="18,6" Margin="8">取消</flat:Button>
             <flat:Button x:Name="btnOk" Click="Button_Click"  FontSize="18" Padding="18,6" Margin="8">确定</flat:Button>

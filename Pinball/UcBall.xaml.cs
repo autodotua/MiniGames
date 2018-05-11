@@ -22,22 +22,30 @@ namespace Pinball
     /// </summary>
     public partial class UcBall : UserControl
     {
+        public static int index = 0;
 
-        public double X { get; set; }
-        public double Y { get; set; }
         public UcBall()
         {
             InitializeComponent();
-        }
-
-        public UcBall(double x, double y) : this()
-        {
             Width = D;
             Height = D;
-            X = x;
-            Y = y;
-            txt.Text = x + "," + y;
+            BallColor = new SolidColorBrush(Colors.Black);
+            DebugMode = true;
+            txt.Text = index++.ToString();
         }
+
+        //public UcBall(double x, double y) : this()
+        //{
+        //    Width = D;
+        //    Height = D;
+        //    txt.Text = x + "," + y;
+        //}
+
+        private double vx;
+        private double vy;
+        public double X => (RenderTransform as TranslateTransform).X + R;
+        public double Y => (RenderTransform as TranslateTransform).Y + R;
+        private bool hasCollided = false;
 
         public static readonly DependencyProperty BallColorProperty =
             DependencyProperty.Register("BallColor",
@@ -58,24 +66,24 @@ namespace Pinball
 
         private bool DebugMode
         {
-            get => GetValue(DebugModeProperty) .Equals( Visibility.Visible);
-            set => SetValue(DebugModeProperty, value?Visibility.Visible:Visibility.Collapsed);
+            get => GetValue(DebugModeProperty).Equals(Visibility.Visible);
+            set => SetValue(DebugModeProperty, value ? Visibility.Visible : Visibility.Collapsed);
         }
-        private bool occupable=false;
 
+        public IBlock LastCollidedBlock;
 
-        private void BeginColorAnimation(Color To,FrameworkElement target,PropertyPath property)
+        private void BeginColorAnimation(Color To, FrameworkElement target, PropertyPath property)
         {
             ColorAnimation aniOccupable = new ColorAnimation(To, AnimationDuration);
             Storyboard.SetTarget(aniOccupable, this);
-            Storyboard.SetTargetProperty(aniOccupable,property);
+            Storyboard.SetTargetProperty(aniOccupable, property);
             Storyboard storyOccupable = new Storyboard();
             storyOccupable.Children.Add(aniOccupable);
             storyOccupable.Begin();
         }
 
-        public bool Occupable { get => occupable; set => occupable = value; }
-
-
+        public double Vy { get => vy; set => vy = value; }
+        public double Vx { get => vx; set => vx = value; }
+        public bool HasCollided { get => hasCollided; set => hasCollided = value; }
     }
 }

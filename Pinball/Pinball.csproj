@@ -62,11 +62,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Datas.cs" />
+    <Compile Include="IBlock.cs" />
     <Compile Include="PgGame.xaml.cs">
       <DependentUpon>PgGame.xaml</DependentUpon>
     </Compile>
     <Compile Include="PgSettings.xaml.cs">
       <DependentUpon>PgSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UcBlockSquare.xaml.cs">
+      <DependentUpon>UcBlockSquare.xaml</DependentUpon>
     </Compile>
     <Compile Include="UcBall.xaml.cs">
       <DependentUpon>UcBall.xaml</DependentUpon>
@@ -88,6 +92,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="PgSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UcBlockSquare.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -121,6 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="日志.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
